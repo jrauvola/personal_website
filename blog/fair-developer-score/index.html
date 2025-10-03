@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Fair Developer Score: Build-Adjusted Measurement | Josh Rauvola</title>
+    <meta
+      name="description"
+      content="Fair Developer Score (FDS) balances developer effort and impact to measure meaningful engineering productivity."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <div class="container">
+        <a class="brand" href="../index.html#top" data-animate="fade-in slide-down" data-delay="0.15">Josh Rauvola</a>
+        <nav class="nav" aria-label="Primary navigation">
+          <button
+            class="nav__toggle"
+            aria-expanded="false"
+            aria-controls="primary-navigation"
+            data-animate="fade-in slide-down"
+            data-delay="0.2"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="nav__toggle-line"></span>
+            <span class="nav__toggle-line"></span>
+          </button>
+          <ul class="nav__links" id="primary-navigation" aria-hidden="true">
+            <li data-animate="fade-in slide-down" data-delay="0.25"><a href="../index.html#about">01. About</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.3"><a href="../index.html#projects">02. Projects</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.35"><a href="../index.html#blog">03. Blog</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.4"><a href="../index.html#contact">04. Contact</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.45">
+              <a href="../media/resume_josh.pdf" target="_blank" rel="noopener">Résumé</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <header class="post-header">
+        <div class="container">
+          <div class="post-header__meta">Blog • April 2025</div>
+          <h1 class="post-header__title">Fair Developer Score: Build-Adjusted Measurement of Effort and Impact</h1>
+          <div class="post-header__tags">
+            <span class="post-tag">Productivity</span>
+            <span class="post-tag">Research</span>
+            <span class="post-tag">Software Engineering</span>
+          </div>
+        </div>
+      </header>
+
+      <article class="post-body">
+        <div class="post-content">
+          <p>
+            In large software projects, measuring developer productivity and impact is hard. Traditionally, companies use
+            metrics like “lines of code written” or “number of commits” to gauge a developer’s output. But any engineer knows
+            those can be very misleading: 100 lines of well-thought-out code that fixes a core bug is far more valuable than
+            1000 lines of trivial changes. Also, these simple metrics can unfairly favor certain kinds of work (or workers)
+            and create bad incentives. Recognizing these issues, our team set out to design a better metric - something that
+            is fair, context-aware, and actually correlates with meaningful impact. This led to Fair Developer Score (FDS).
+          </p>
+
+          <h2>What is the Fair Developer Score?</h2>
+          <p>FDS is a composite metric that evaluates developers on two main dimensions:</p>
+          <ul>
+            <li>
+              <strong>Effort</strong> – how much did the developer contribute, in terms of actual code change and complexity?
+              This isn’t just lines of code; it considers things like how many files were involved, how central those files
+              are to the architecture, how novel the changes were, and the developer’s ownership of the code (did they write
+              most of the code being changed?).
+            </li>
+            <li>
+              <strong>Importance</strong> – how significant was the contribution to the project or product? For example, did
+              the change affect a crucial component of the system? Was it a large-scale change or a minor fix? Did it address
+              a high-priority issue or a new feature? These factors raise the importance of the work done.
+            </li>
+          </ul>
+          <p>
+            The Fair Developer Score for a person is essentially Effort × Importance, aggregated across all their contributions
+            (we focus on code commits). The idea is that a truly high score comes from doing significant work that has
+            significant impact - capturing the notion of “effort aligned with organizational value.”
+          </p>
+
+          <h2>How It Works (Under the Hood)</h2>
+          <p>
+            We analyzed the problem by looking at commit histories from version control (like Git). The first challenge was to
+            group commits into meaningful units of work. Developers might commit code in many small chunks that actually belong
+            to one logical task or “build”. We applied an algorithm called Torque Clustering to automatically cluster commits
+            that are related (it looks at the time gap between commits, the files changed, and the author). Each cluster of
+            commits is called a “build” - which approximates a feature, bug fix, or task the developer worked on.
+          </p>
+          <p>For each build, we calculate:</p>
+          <ul>
+            <li>
+              An <strong>Effort score</strong> for each developer involved in that build. For example, if two devs worked on it,
+              each gets a score proportional to what they contributed. Effort considers:
+              <ul>
+                <li>Code scale: how large the change was (lines of code, number of edits - log-scaled so it’s not just raw lines).</li>
+                <li>Reach: how broad the change was (files and directories touched; making a change in 10 files is bigger reach than in 1 file).</li>
+                <li>Centrality: using a PageRank on the project’s file-dependency graph to see how central the changed files are - changing a core library file counts more than a peripheral script.</li>
+                <li>Ownership: if you wrote the file originally or have been a major contributor, your edits weigh a bit more (it shows deep knowledge versus drive-by minor tweak).</li>
+                <li>Novelty: creating a brand new module or file gets credit for new functionality.</li>
+                <li>Speed: not heavily weighted, but finishing a build faster (in tight commit sequence) can indicate focus and efficiency.</li>
+              </ul>
+            </li>
+            <li>
+              An <strong>Importance score</strong> for the build itself. This doesn’t depend on who did it, but rather how valuable
+              that build is to the project. We look at:
+              <ul>
+                <li>Scope: total lines of code changed (a proxy for scale of change) and the distribution of changes (many files vs one concentrated area).</li>
+                <li>Arch. Impact: similar centrality measure - changes in critical parts of the system raise importance.</li>
+                <li>Complexity: was this build touching many different components (which could introduce complexity)?</li>
+                <li>Task priority: if we have links to issue trackers or commit messages, we detect if it was a hotfix, a major feature, or a routine update. (We trained a simple classifier to flag high-priority vs low-priority from commit text).</li>
+                <li>Release proximity: work done right before a major release or deadline might be more impactful. For example, finishing a feature in time for a big release is crucial, whereas a similar change far from any release might be less urgent.</li>
+              </ul>
+            </li>
+          </ul>
+          <p>
+            Finally, for each developer, we aggregate their Effort × Importance for all the builds they participated in during a
+            time window (say a quarter). That gives their Fair Developer Score for that period.
+          </p>
+
+          <h2>What Did We Learn?</h2>
+          <p>
+            We tested FDS on a real dataset: contributions to the Linux kernel (one of the largest open-source projects). We took
+            a slice of the Git history and computed FDS for the developers in that slice (there were dozens of developers in the
+            sample). We then examined a few things to validate if FDS makes sense:
+          </p>
+          <ul>
+            <li>
+              <strong>Distribution:</strong> FDS scores followed a heavy-tailed distribution - a few people scored very high, many
+              had low scores. This intuitively matches how open-source often works (a small core team does the bulk of significant
+              work). It was more skewed than just counting commits, meaning FDS gave more distinction to truly impactful
+              contributors.
+            </li>
+            <li>
+              <strong>Correlation with known metrics:</strong> We compared FDS to simpler measures. For example, how does a dev’s FDS
+              correlate with their average pull request turnaround time or the number of bug fixes they did? We found moderate
+              positive correlations, indicating that higher FDS tended to align with other signs of productivity (e.g., shorter PR
+              lead times, which is good). Notably, FDS wasn’t just a duplicate of commit count - some people who had tons of tiny
+              commits didn’t score as high if those commits were low-impact. And some who committed less frequently but on very
+              important things scored higher than commit count alone would suggest.
+            </li>
+            <li>
+              <strong>Case studies:</strong> We looked at the top scorers. In the Linux data, the highest FDS was (unsurprisingly)
+              Linus Torvalds himself at that time, who was merging big impactful changes. Others in the top were known core
+              maintainers. On the flip side, we saw low FDS for folks who might have done drive-by minor fixes. This was reassuring -
+              it matched our expectations of who is central to the project.
+            </li>
+            <li>
+              <strong>A/B comparison:</strong> We tried a fun test - what if you ranked developers by FDS vs ranked by just number of
+              commits, and then see which top 10 group looks more “productive” by other measures? The FDS top 10 had done things like
+              more critical code changes and had larger positive impact, whereas the commit-count top 10 included at least a couple
+              people who were spamming small commits. This qualitative check favored FDS (though for rigorous proof we’d need more
+              data).
+            </li>
+          </ul>
+
+          <h2>Why Fair Developer Score?</h2>
+          <p>The goal was to bring fairness and context into productivity metrics:</p>
+          <ul>
+            <li>
+              <strong>Fairness:</strong> Developers who take on tough, important work should get credit, even if that doesn’t
+              translate to raw line counts. Meanwhile, those doing lots of trivial updates shouldn’t artificially appear to be the
+              top just by volume. FDS helps mitigate biases like favoring quantity over quality.
+            </li>
+            <li>
+              <strong>Holistic view:</strong> It encourages a culture where both effort (hard work, complex coding tasks) and impact
+              (doing what the team/project really needs) are valued. This can guide better behavior: e.g., refactoring a critical
+              module might be more valued than adding a superficial feature, even if the latter adds more lines of code.
+            </li>
+            <li>
+              <strong>Actionable insights:</strong> Managers or leads could use FDS to identify unsung heroes (someone with slightly
+              fewer commits but very high importance work) or to notice if someone is doing a lot of work that doesn’t translate into
+              impact (maybe they’re stuck in toil tasks, which could flag a process problem).
+            </li>
+          </ul>
+
+          <h2>Challenges & What’s Next</h2>
+          <p>No metric is perfect. We acknowledge several limitations:</p>
+          <ul>
+            <li>
+              FDS currently looks only at Git commits. It doesn’t directly account for code review feedback, design work, mentoring,
+              or other “invisible” contributions. Those are super important too! Future iterations might integrate data from code
+              reviews or design docs to round out the picture.
+            </li>
+            <li>
+              There’s a risk with any metric: if used improperly, people might try to “game” it. For example, if someone knows the
+              formula, they might try to bundle commits in certain ways. We propose FDS as a helpful diagnostic tool, not as a strict
+              KPI to reward/punish developers blindly. It should always be used alongside human judgment.
+            </li>
+            <li>
+              We want to test FDS in more environments: we’ve done open-source, but what about a closed-source corporate repo? Or a
+              smaller team project? The thresholds for what’s “important” might differ. Part of future work is making the model
+              adaptive to different contexts (maybe via some tuning parameters or training on historical project data).
+            </li>
+            <li>
+              We’re also interested in how AI-assisted coding affects metrics like FDS. With tools like GitHub Copilot, a developer
+              might produce more code in less time - but does that reflect in effort or importance? Early studies (like from Google’s
+              DORA report 2024) show mixed effects of AI on productivity. We might need to adjust FDS if AI is doing a chunk of the
+              work (for instance, discounting AI-written code). This is an emerging area.
+            </li>
+          </ul>
+
+          <h2>Conclusion</h2>
+          <p>
+            Fair Developer Score is our attempt to move beyond naive metrics and capture a more meaningful picture of engineering
+            productivity. By focusing on what was done and why it matters, not just how much, we aim to recognize the developers who
+            truly drive a project forward. Our initial results are promising - FDS aligns with intuitive assessments of impact and
+            filters out noise. We hope this framework can spark conversations in both industry and academia about better metrics for
+            software engineering work. Ultimately, the goal is to help teams celebrate the right kind of contributions and guide
+            improvement in a positive way.
+          </p>
+          <p>
+            (Co-authored by Josh Rauvola, Xinzhou Wang, and team; currently under academic peer review.)
+          </p>
+        </div>
+
+        <div class="post-footer">
+          <p>
+            Prefer the full paper? <a href="../media/fair_developer_score/Fair_Developer_Score.pdf" target="_blank" rel="noopener">Download the complete PDF.</a>
+          </p>
+          <p>
+            Curious about AI efficiency? Read
+            <a href="../thoughttrim/">ThoughtTrim: Anchor-Driven RL Modification</a> or return to the
+            <a href="../index.html#blog">journal</a>.
+          </p>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 Josh Rauvola. Built with intention and green compute.</p>
+      </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+  </body>
+</html>
+

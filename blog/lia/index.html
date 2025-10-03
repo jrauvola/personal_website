@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LiA: Large Interview Assistant | Josh Rauvola</title>
+    <meta
+      name="description"
+      content="LiA is an AI-powered interview preparation platform that combines LLM agents, real-time analytics, and multimodal feedback to strengthen candidate confidence."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <div class="container">
+        <a class="brand" href="../index.html#top">Josh Rauvola</a>
+        <nav class="nav" aria-label="Primary navigation">
+          <button class="nav__toggle" aria-expanded="false" aria-controls="primary-navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="nav__toggle-line"></span>
+            <span class="nav__toggle-line"></span>
+          </button>
+          <ul class="nav__links" id="primary-navigation" aria-hidden="true">
+            <li><a href="../index.html#about">01. About</a></li>
+            <li><a href="../index.html#projects">02. Projects</a></li>
+            <li><a href="../index.html#blog">03. Blog</a></li>
+            <li><a href="../index.html#contact">04. Contact</a></li>
+            <li><a href="../media/resume_josh.pdf" target="_blank" rel="noopener">Résumé</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <header class="post-header">
+        <div class="container">
+          <div class="post-header__meta">Blog • January 2025</div>
+          <h1 class="post-header__title">LiA: Large Interview Assistant – AI-Powered Interview Preparation</h1>
+          <div class="post-header__tags">
+            <span class="post-tag">AI</span>
+            <span class="post-tag">Agents</span>
+            <span class="post-tag">Interview Prep</span>
+          </div>
+        </div>
+      </header>
+
+      <article class="post-body">
+        <div class="post-content">
+          <p>
+            LiA (Large Interview Assistant) started as a weekend project to help anxious candidates like Khushi, a recent
+            data science grad who would blank out the moment an interview began. We wanted something smarter than a list of
+            generic questions—an AI teammate that could rehearse with you, adapt to your goals, and show you where you were
+            improving. That became the north star for LiA: turn intimidating interview practice into a guided, feedback-rich
+            routine you actually look forward to.
+          </p>
+
+          <h2>Why Build LiA?</h2>
+          <p>
+            Every member of our team—Yucheng, Khushi, Ben, and I—has coached or mentored people breaking into tech. The same
+            obstacles kept coming up: finding realistic practice questions, gauging if an answer was “good enough,” and
+            getting honest feedback on delivery. We decided to stitch those needs together into one product. LiA combines a
+            question bank that orients to a candidate’s background, storytelling coaching that demonstrates what “great” looks
+            like, and rich telemetry on voice and facial cues so users can see how they’re coming across in real time.
+          </p>
+
+          <h2>How the System Works</h2>
+          <p>
+            Under the hood LiA uses a set of collaborating LLM agents. The question generator takes in résumé highlights,
+            role ambitions, and industry targets, then prompts Gemini 1.5 Pro to create scenarios that feel tailored. After
+            each prompt, the expert agent shows a model answer—sometimes using retrieval to pull precise wins from your
+            past, sometimes reasoning step-by-step with STAR, depending on what the question demands. Finally, the evaluation
+            agent grades your reply against a rubric we co-designed with friends at big tech companies. Instead of a vague
+            “good job,” you get a score plus the rationale behind it and specific fixes to try next round.
+          </p>
+
+          <p>
+            We wanted LiA to listen as well as it talks, so we layered in multimodal analytics. The voice sensor checks pace,
+            filler words, and confidence signals; the facial expression tracker watches for eye contact, smiles, and
+            engagement. All of that feeds a live dashboard during and after a session so you can correlate what you said with
+            how you said it.
+          </p>
+
+          <h2>The Experience We Designed</h2>
+          <p>
+            LiA feels more like joining a video call than filling out a worksheet. The React front-end walks you through a
+            warm-up, interview simulation, and feedback debrief. You pick the role and difficulty, the agents take it from
+            there. During the session you see a confidence meter pulsing with your vocal and facial signals; afterwards you
+            get a written summary, your rubric scores, and suggestions on what to practice next. It’s a loop that reinforces
+            progress: rehearse, review, iterate.
+          </p>
+
+          <h2>What’s Next</h2>
+          <p>
+            We’re continuing to expand the corpus—more industries, more question styles, more examples sourced from real
+            interviewers. The audio pipeline still has room to grow, especially in isolating tone versus content. We also want
+            to let users ask LiA for company-specific prep so it can surface the right patterns for, say, a Google ML
+            interview or a fintech analytics role. And as more people practice with LiA, we’ll tune the evaluator with new
+            human scoring data so feedback stays sharp and fair.
+          </p>
+
+          <h2>Tech Stack & Team</h2>
+          <p>
+            LiA runs on a React front-end, Flask orchestration layer, LangChain-powered agents, and Gemini 1.5 Pro for
+            generation. Multimodal insights are powered by custom audio pipelines and computer vision models. Everything is
+            deployed on Google Cloud Run so sessions scale automatically on Demo Day spikes. The four of us — Yucheng Fang,
+            Khushi Ranganatha, myself, and Ben Thiele — split responsibilities across research, engineering, product, and user
+            testing with a shared goal: make interview practice feel like a conversation, not a chore.
+          </p>
+        </div>
+
+        <div class="post-footer">
+          <p>
+            Feel free to check out the repo! <a href="https://github.com/jrauvola/lia" target="_blank" rel="noopener">github.com/jrauvola/lia</a>
+            shares the code, agent prompts, and latest updates.
+          </p>
+          <p>
+            Head back to the <a href="../index.html#blog">journal</a> for more AI and engineering research.
+          </p>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 Josh Rauvola. Built with intention and green compute.</p>
+      </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ThoughtTrim: Anchor-Driven RL Modification | Josh Rauvola</title>
+    <meta
+      name="description"
+      content="ThoughtTrim trims chain-of-thought by ranking anchor sentences, making LLM reasoning leaner, faster, and more trustworthy."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <div class="container">
+        <a class="brand" href="../index.html#top" data-animate="fade-in slide-down" data-delay="0.15">Josh Rauvola</a>
+        <nav class="nav" aria-label="Primary navigation">
+          <button
+            class="nav__toggle"
+            aria-expanded="false"
+            aria-controls="primary-navigation"
+            data-animate="fade-in slide-down"
+            data-delay="0.2"
+          >
+            <span class="sr-only">Toggle navigation</span>
+            <span class="nav__toggle-line"></span>
+            <span class="nav__toggle-line"></span>
+          </button>
+          <ul class="nav__links" id="primary-navigation" aria-hidden="true">
+            <li data-animate="fade-in slide-down" data-delay="0.25"><a href="../index.html#about">01. About</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.3"><a href="../index.html#projects">02. Projects</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.35"><a href="../index.html#blog">03. Blog</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.4"><a href="../index.html#contact">04. Contact</a></li>
+            <li data-animate="fade-in slide-down" data-delay="0.45">
+              <a href="../media/resume_josh.pdf" target="_blank" rel="noopener">Résumé</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <header class="post-header">
+        <div class="container">
+          <div class="post-header__meta">Blog • May 2025</div>
+          <h1 class="post-header__title">ThoughtTrim: Anchor-Driven RL Modification</h1>
+          <div class="post-header__tags">
+            <span class="post-tag">AI Research</span>
+            <span class="post-tag">LLM</span>
+            <span class="post-tag">Efficiency</span>
+            <span class="post-tag">Hackathon</span>
+          </div>
+        </div>
+      </header>
+
+      <article class="post-body">
+        <div class="post-content">
+          <p>
+            Large Language Models (LLMs) often “think” in long chains of reasoning: verbose step-by-step outputs known
+            as chain-of-thought (CoT). However, not every sentence in those CoTs actually matters for getting to the
+            correct answer. In many cases, only a few key steps (what we call “thought anchors”) significantly influence
+            the final result. The rest might be redundant or “fluff”. ThoughtTrim is a project born from this realization:
+            What if we could trim down a model’s reasoning to just the essential parts? This would make the AI’s reasoning
+            process more efficient (saving time and tokens) and potentially more interpretable and reliable.
+          </p>
+
+          <h2>The Idea of ThoughtTrim</h2>
+          <p>
+            ThoughtTrim uses a simple yet clever approach: run the AI’s reasoning and identify which sentences are most
+            important. We do this by measuring the impact of each sentence on the final answer. Concretely, for each
+            sentence in the chain-of-thought, we compare the AI’s answer distribution with that sentence vs. without it. If
+            removing a sentence changes the answer (or the confidence in answers) a lot, that sentence has high importance
+            (high “counterfactual influence”). If the answer stays pretty much the same, the sentence was likely not
+            critical. The technical tool we use is KL divergence – essentially a way to quantify how different the answer
+            probabilities are in those two scenarios. That gives us a ranked list of sentences by importance (the
+            “anchors”).
+          </p>
+
+          <h2>How Trimming Works</h2>
+          <p>
+            Once we have the importance ranking, we can start pruning the less important sentences from the reasoning chain.
+            We then feed the trimmed chain-of-thought back into the model and see if it still arrives at the correct
+            answer. By gradually increasing the strictness of trimming (removing more and more, keeping only higher-ranked
+            anchors), we test the limits of how much we can cut while retaining accuracy.
+          </p>
+          <p>
+            We tried this on a set of 100 biology questions (from the MMLU-Pro benchmark). For each question, the model
+            (Qwen-1.5B, a smaller LLM) generated a detailed chain-of-thought and an answer. We then applied ThoughtTrim to
+            see which parts of the reasoning were truly needed. The results were fascinating:
+          </p>
+          <ul>
+            <li>
+              For some questions, ThoughtTrim could remove 60-90% of the tokens in the explanation and the model still got
+              the answer right. This means the model was basically thinking out loud a lot of unnecessary stuff!
+            </li>
+            <li>
+              Other questions were more fragile; even a small removal caused the answer to flip. Those cases are
+              interesting too, because they tell us the model might be just barely reasoning correctly, and any change risks
+              an error.
+            </li>
+            <li>
+              On average, as we removed more and more fluff, the accuracy gently dropped. But importantly, our method of
+              removing the least important parts first performed much better than random removal. We even did a control test
+              where we jumbled the importance rankings (to simulate random trimming) and that approach led to faster
+              accuracy drop-offs. It proved that our importance metric was meaningful – we were truly identifying the
+              expendable parts of the thought process.
+            </li>
+          </ul>
+
+          <h2>Why This Matters</h2>
+          <p>
+            ThoughtTrim is more than a neat efficiency hack. It has implications for AI safety and transparency:
+          </p>
+          <ul>
+            <li>
+              <strong>Efficiency:</strong> In production, if an AI can reason with fewer tokens, it’s faster and cheaper
+              (important for large models where each token costs compute). Imagine a future where an AI not only gives you
+              an answer but also a slimmed-down reasoning or explanation, saving on resources.
+            </li>
+            <li>
+              <strong>Determinism:</strong> LLMs can be unpredictable in how they reason. By enforcing a focus on critical
+              steps, we might guide models to reason in more reliable ways. One vision is to train future models to
+              naturally generate only the important steps – making them less verbose and less prone to getting lost in their
+              own reasoning.
+            </li>
+            <li>
+              <strong>Interpretability:</strong> A trimmed chain-of-thought that’s still correct is easier for a human to
+              read and verify. It’s like getting a concise proof of a math problem rather than a 5-page ramble. This could
+              help in debugging model errors or understanding model decisions.
+            </li>
+          </ul>
+
+          <h2>Next Steps & Future Work</h2>
+          <p>
+            ThoughtTrim was initially developed during a weekend AI research sprint, so there’s plenty of room to expand:
+          </p>
+          <ul>
+            <li>
+              We want to test it on bigger models and more diverse problems. Does a huge model like GPT-4 also have so much
+              fluff in its reasoning? Possibly, and trimming it could yield big gains.
+            </li>
+            <li>
+              We’re exploring using ThoughtTrim in training: e.g. reinforcement learning where the model gets rewarded for
+              following an “anchor plan” (the key steps) and penalized for unnecessary detours. Over time, the model could
+              learn to think more like an expert reasoner, focusing only on what matters.
+            </li>
+            <li>
+              Another idea is integrating ThoughtTrim into AI agents – for example, if an AI is performing a multi-step task
+              (like a web assistant agent), ThoughtTrim could serve as a watchdog to cut off unproductive tangents and keep
+              the agent on track.
+            </li>
+            <li>
+              Lastly, from a safety standpoint, trimming could remove parts of reasoning that might be risky or disallowed,
+              while keeping the solution. For instance, if a chain-of-thought veered into sensitive content but that wasn’t
+              needed for the final answer, trimming might make the output safer. This is speculative but worth researching.
+            </li>
+          </ul>
+
+          <h2>Conclusion</h2>
+          <p>
+            The ThoughtTrim project showed that brevity can be the soul of wit – even for AI. By identifying and keeping
+            only the “thought anchors,” we can make AI reasoning more efficient and possibly more trustworthy. Watching the
+            model still get answers right with a fraction of its original reasoning is like watching a student solve a
+            problem in 2 steps instead of 10 – it’s a sign of mastery. We’re excited to push this idea further and see how
+            it can contribute to building AI systems that are not just smart, but also efficient and safe.
+          </p>
+          <p>
+            (Authored by Josh Rauvola and Andrew Briand as part of Apart Research’s hackathon, 2025.)
+          </p>
+        </div>
+        <div class="post-footer">
+          <p>
+            Prefer the full paper? <a href="../media/thought_trim/ThoughtTrim__Anchor_Driven_RL_modification.pdf" target="_blank" rel="noopener">Download the complete PDF.</a>
+          </p>
+          <p>
+            Looking for more? Explore the
+            <a href="../fair-developer-score/">Fair Developer Score</a> research recap or head back to the
+            <a href="../index.html#blog">journal</a>.
+          </p>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 Josh Rauvola. Built with intention and green compute.</p>
+      </div>
+    </footer>
+
+    <script src="../script.js" defer></script>
+  </body>
+</html>
+
