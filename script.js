@@ -1,3 +1,9 @@
+if (window.location.pathname.endsWith('index.html')) {
+  const newPath = window.location.pathname.replace(/index\.html$/, '');
+  const newUrl = `${newPath}${window.location.search}${window.location.hash}` || '/';
+  history.replaceState(null, '', newUrl);
+}
+
 const toggleButton = document.querySelector('.nav__toggle');
 const navLinks = document.querySelector('.nav__links');
 const header = document.querySelector('.site-header');
