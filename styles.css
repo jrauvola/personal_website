@@ -260,21 +260,18 @@ body {
 .hero__indicator {
   position: absolute;
   bottom: 2.6rem;
-  left: 50%;
-  transform: translateX(-50%);
+  left: auto;
+  right: auto;
   width: min(760px, var(--container-width));
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 0.5rem;
   font-size: 0.78rem;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   color: rgba(247, 249, 252, 0.6);
-}
-
-.hero__indicator span {
-  text-align: left;
 }
 
 .hero__indicator-arrow {
