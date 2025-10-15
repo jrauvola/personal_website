@@ -262,14 +262,19 @@ body {
   bottom: 2.6rem;
   left: 50%;
   transform: translateX(-50%);
+  width: min(760px, var(--container-width));
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 0.5rem;
   font-size: 0.78rem;
   letter-spacing: 0.38em;
   text-transform: uppercase;
   color: rgba(247, 249, 252, 0.6);
+}
+
+.hero__indicator span {
+  text-align: left;
 }
 
 .hero__indicator-arrow {

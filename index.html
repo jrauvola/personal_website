@@ -63,7 +63,7 @@
             <a class="btn" href="media/resume_josh.pdf" target="_blank" rel="noopener">Download resume</a>
           </div>
         </div>
-        <div class="hero__indicator" data-animate="fade-in bounce" data-delay="0.9">
+        <div class="hero__indicator">
           <span>Scroll</span>
           <span class="hero__indicator-arrow"></span>
         </div>
@@ -89,7 +89,7 @@
                 and time-series forecasting.
               </p>
               <p>
-                Highlights include leading the Fair Developer Score research (under review for ISE 2025), winning
+                Highlights include leading the Fair Developer Score research (published at ASE 2025), winning
                 the UChicago AI Hackathon with a graph neural network project, and developing LIA, a multi-agent AI
                 interviewing coach that blends language and vision models.
               </p>
@@ -297,6 +297,31 @@
         <p>© 2025 Josh Rauvola. Built with intention and green compute.</p>
       </div>
     </footer>
+
+    <!-- Calendly badge widget begin -->
+    <link
+      rel="stylesheet"
+      href="https://assets.calendly.com/assets/external/widget.css"
+    />
+    <script
+      src="https://assets.calendly.com/assets/external/widget.js"
+      type="text/javascript"
+      async
+    ></script>
+    <script type="text/javascript">
+      window.addEventListener('load', function () {
+        if (window.Calendly) {
+          Calendly.initBadgeWidget({
+            url: 'https://calendly.com/jrauvola/30min',
+            text: 'Set up a Chat',
+            color: '#42ffb3',
+            textColor: '#021008',
+            branding: false,
+          });
+        }
+      });
+    </script>
+    <!-- Calendly badge widget end -->
 
     <script src="./script.js" defer></script>
   </body>

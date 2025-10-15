@@ -244,6 +244,29 @@
       </div>
     </footer>
 
+    <link
+      rel="stylesheet"
+      href="https://assets.calendly.com/assets/external/widget.css"
+    />
+    <script
+      src="https://assets.calendly.com/assets/external/widget.js"
+      type="text/javascript"
+      async
+    ></script>
+    <script type="text/javascript">
+      window.addEventListener('load', function () {
+        if (window.Calendly) {
+          Calendly.initBadgeWidget({
+            url: 'https://calendly.com/jrauvola/30min',
+            text: 'Set up a Chat',
+            color: '#42ffb3',
+            textColor: '#021008',
+            branding: false,
+          });
+        }
+      });
+    </script>
+
     <script src="../../script.js" defer></script>
   </body>
 </html>
