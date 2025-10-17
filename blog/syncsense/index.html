@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SyncSense: Music Supervisor Agent | Josh Rauvola</title>
+    <meta
+      name="description"
+      content="SyncSense is a closed-loop music supervisor agent that binds emotion, score, and visuals across the creative pipeline."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../styles.css" />
+  </head>
+  <body>
+    <header class="site-header" id="top">
+      <div class="container">
+        <a class="brand" href="../../#top">Josh Rauvola</a>
+        <nav class="nav" aria-label="Primary navigation">
+          <button class="nav__toggle" aria-expanded="false" aria-controls="primary-navigation">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="nav__toggle-line"></span>
+            <span class="nav__toggle-line"></span>
+          </button>
+          <ul class="nav__links" id="primary-navigation" aria-hidden="true">
+            <li><a href="../../#about">01. About</a></li>
+            <li><a href="../../#projects">02. Projects</a></li>
+            <li><a href="../../#blog">03. Blog</a></li>
+            <li><a href="../../#contact">04. Contact</a></li>
+            <li><a href="../../media/resume_josh.pdf" target="_blank" rel="noopener">Resume</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <header class="post-header">
+        <div class="container">
+          <div class="post-header__meta">Blog • March 2025</div>
+          <h1 class="post-header__title">SyncSense: Music Supervisor Agent for AI Video</h1>
+          <div class="post-header__tags">
+            <span class="post-tag">Music AI</span>
+            <span class="post-tag">Leonardo</span>
+            <span class="post-tag">Production</span>
+          </div>
+        </div>
+      </header>
+
+      <article class="post-body">
+        <div class="post-content">
+          <p>
+            SyncSense is our “music supervisor agent” that locks emotion, score, and picture into a single controllable
+            loop. Starting from a creative brief, we extract a time-varying valence/arousal curve plus descriptive tags,
+            then force every downstream decision—music selection, harmonic evolution, visual pacing, and editorial beats—to
+            respect that trajectory. The result is AI-generated footage that actually feels right instead of just looking
+            slick.
+          </p>
+
+          <div class="video-embed">
+            <iframe
+              src="https://www.youtube.com/embed/RAUeKvrGmRo"
+              title="SyncSense Presentation"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+
+          <h2>Pipeline at a Glance</h2>
+          <p>
+            The system runs as five deterministic stages: a prompt or beat sheet becomes the emotion curve; we branch into
+            original cue generation or metadata-aligned retrieval; Leonardo and Canvas handle motif-driven visuals locked to
+            the musical grid; then we ship synchronized masters plus A/B variants that highlight the impact of the right vs
+            wrong score.
+          </p>
+
+          <h2>Powered by Leonardo</h2>
+          <p>
+            Leonardo lets us establish palettes, recurring motifs, and beat-accurate transitions quickly. Canvas delivers
+            frame-specific in/out-painting, while Alchemy and upscalers finish assets for both widescreen and vertical. Batch
+            rendering makes it affordable to test multiple emotional curves without blowing up the GPU budget.
+          </p>
+
+          <h2>Toolchain & Ops Discipline</h2>
+          <p>
+            Around that core we keep production basics sharp: Runway/Pika/Luma for motion assists, ControlNet/IP-Adapter for
+            continuity, Udio/Suno for temp cues, and a finishing line that covers Ableton, iZotope RX, Adobe Audition,
+            Premiere, After Effects, Resolve (ACES), Topaz, and Frame.io. Everything lives in a prompt library with seed and
+            energy tracking so the workflow stays reproducible and sustainable.
+          </p>
+
+          <h2>Deliverables & Timeline</h2>
+          <p>
+            We commit to a working prototype, three 30–60s proof-of-concept shorts with A/B comparisons, a two-minute
+            process film, a public prompt atlas, and a social package. The six-week schedule moves from taxonomy and look-dev
+            to clip production, music-swap testing, and final polish—always prioritizing emotionally coherent edits.
+          </p>
+
+          <p>
+            Prefer the full deck? <a href="../../blog/syncsense/SyncSense.pdf" target="_blank" rel="noopener">Download the SyncSense presentation.</a>
+          </p>
+        </div>
+
+        <div class="post-footer">
+          <p>
+            Want to jam on AI scoring? <a href="https://calendly.com/jrauvola/30min" target="_blank" rel="noopener">Set up a chat</a>
+            or head back to the <a href="../../#blog">journal</a> for more projects.
+          </p>
+        </div>
+      </article>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p>© 2025 Josh Rauvola. Built with intention and green compute.</p>
+      </div>
+    </footer>
+
+    <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
+    <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+    <script type="text/javascript">
+      window.addEventListener('load', function () {
+        if (window.Calendly) {
+          Calendly.initBadgeWidget({
+            url: 'https://calendly.com/jrauvola/30min',
+            text: 'Set up a Chat',
+            color: '#42ffb3',
+            textColor: '#021008',
+            branding: false,
+          });
+        }
+      });
+    </script>
+
+    <script src="../../script.js" defer></script>
+  </body>
+</html>
