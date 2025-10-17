@@ -944,8 +944,8 @@ body {
 
 .video-embed {
   position: relative;
-  width: min(840px, 92vw);
-  margin: 2.5rem auto;
+  width: min(1100px, 98vw);
+  margin: 3rem auto;
   border-radius: 1rem;
   overflow: hidden;
   box-shadow: 0 25px 40px rgba(0, 0, 0, 0.35);
@@ -954,7 +954,7 @@ body {
 .video-embed::before {
   content: '';
   display: block;
-  padding-top: 56.25%;
+  padding-top: 50%;
 }
 
 .video-embed iframe {
@@ -967,8 +967,8 @@ body {
 }
 
 .document-embed {
-  width: min(900px, 94vw);
-  margin: 3rem auto;
+  width: min(1100px, 98vw);
+  margin: 3.5rem auto;
   border-radius: 1.2rem;
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -978,7 +978,7 @@ body {
 
 .document-embed iframe {
   width: 100%;
-  height: clamp(480px, 70vh, 920px);
+  height: clamp(640px, 80vh, 1080px);
   border: none;
   background: transparent;
 }
